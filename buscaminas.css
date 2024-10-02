@@ -1,0 +1,79 @@
+h1 {
+    text-align: center;
+    margin-top: 1em;
+    color: #333;
+    text-decoration: none;
+}
+
+h1:before,
+h1:after {
+    content: "";
+    display: block;
+    margin: auto;
+    height: 2px;
+    width: 0px;
+    background: #333;
+    transition: all .8s;
+}
+
+h1:hover:before,
+h1:hover:after {
+    width: 80vw;
+}
+
+#cuadricula {
+    display: flex;
+    justify-content: center;
+}
+
+table {
+    width: 40em;
+    height: 40em;
+    border-collapse: collapse;
+}
+
+td {
+    width: 18px;
+    height: 18px;
+    border: 1px solid rgb(255, 255, 255);
+    text-align: center;
+    background-color: rgb(26, 26, 26);
+    color: white;
+}
+
+
+
+td:hover {
+    box-shadow: 0 4px 16px rgb(0, 0, 0);
+    transition: all 0.4s ease;
+    background-color: rgb(158, 158, 158);
+    color: black;
+}
+
+.revelada {
+    background-color: grey;
+}
+
+#mensaje {
+    text-align: center;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 3px;
+    border-radius: 10px;
+    margin: 15px auto;
+    width: 30%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+
+#mensaje.mostrar {
+    opacity: 1;
+    visibility: visible;
+}
+
+.tabla-desactivada {
+    pointer-events: none;
+    opacity: 0.6;
+}
