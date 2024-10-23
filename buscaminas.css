@@ -1,8 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Geo:ital@0;1&family=Londrina+Sketch&display=swap');
+
+body {
+    margin: 0;
+    font-family: "Geo", sans-serif;
+    font-weight: 500;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('images/fondo.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.container-h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 10%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
 h1 {
     text-align: center;
-    margin-top: 1em;
-    color: #333;
+    color: rgb(255, 255, 255);
     text-decoration: none;
+    margin: 0;
+    font-size: 2rem;
+    text-shadow: 6px 6px 5px rgba(0, 0, 0, 0.7);
 }
 
 h1:before,
@@ -12,7 +40,7 @@ h1:after {
     margin: auto;
     height: 2px;
     width: 0px;
-    background: #333;
+    background: #ffffff;
     transition: all .8s;
 }
 
@@ -21,27 +49,70 @@ h1:hover:after {
     width: 80vw;
 }
 
-#cuadricula {
+.container-cuadricula {
     display: flex;
     justify-content: center;
+    height: 90%;
+    align-items: center;
+    width: 100%;
 }
 
 table {
     width: 40em;
     height: 40em;
     border-collapse: collapse;
+    transition: 0.3s;
 }
 
 td {
-    width: 18px;
-    height: 18px;
+    width: 12.5%;
+    height: 12.5%;
     border: 1px solid rgb(255, 255, 255);
     text-align: center;
     background-color: rgb(26, 26, 26);
     color: white;
+    font-size: 1.5rem;
+}
+
+@media (max-width: 670px) {
+    table {
+        width: 30em;
+        height: 30em;
+    }
+
+    td {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 483px) {
+    table {
+        width: 25em;
+        height: 25em;
+    }
+}
+
+@media (max-width: 403px) {
+    table {
+        width: 23em;
+        height: 23em;
+    }
 }
 
 
+@media (max-width: 375px) {
+    table {
+        width: 22em;
+        height: 22em;
+    }
+}
+
+@media (max-width: 350px) {
+    table {
+        width: 20em;
+        height: 20em;
+    }
+}
 
 td:hover {
     box-shadow: 0 4px 16px rgb(0, 0, 0);
@@ -54,26 +125,22 @@ td:hover {
     background-color: grey;
 }
 
-#mensaje {
-    text-align: center;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 3px;
-    border-radius: 10px;
-    margin: 15px auto;
-    width: 30%;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-
-
-#mensaje.mostrar {
-    opacity: 1;
-    visibility: visible;
-}
-
 .tabla-desactivada {
     pointer-events: none;
     opacity: 0.6;
+}
+
+.custom-button {
+    font-family: "Geo", sans-serif;
+    background-color: black;
+    font-weight: 600;
+    transition: 0.3s;
+    border: none;
+}
+
+.custom-button:hover {
+    background-color: rgb(155, 155, 155);
+    color: black;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgb(0, 0, 0);
 }

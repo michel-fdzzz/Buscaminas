@@ -33,7 +33,7 @@ function generarCuadricula() {
         let fila = Math.floor(Math.random() * numFilas);
         let columna = Math.floor(Math.random() * numColumnas);
 
-        //Colocar mina si la celda no tiene mina ya
+        //Colocar mina si la celda no tiene mina
         if (!array[fila][columna].classList.contains("uno")) {
             añadirClase(array[fila][columna], 1); //Añadir clase de mina
             contador++;
@@ -41,14 +41,14 @@ function generarCuadricula() {
     }
 
     //Calcular el total de celdas sin mina
-    totalCeldasSinMina = (numFilas * numColumnas) - MAX_MINAS; //Total de celdas menos las minas
+    totalCeldasSinMina = (numFilas * numColumnas) - MAX_MINAS;
 
     //Añadir los eventos de clic a las celdas
     for (let i = 0; i < numFilas; i++) {
         for (let j = 0; j < numColumnas; j++) {
             array[i][j].addEventListener("click", function () {
                 if (contador2 === 0) {
-                    //En el primer clic, si pinchas en una mina, deja de serlo
+                    //En el primer clic, si pinchas en una mina, deja de serlo para asegurar que puedas empezar a jugar
                     if (array[i][j].classList.contains("uno")) {
                         array[i][j].className = "cero";
                     }
@@ -59,8 +59,8 @@ function generarCuadricula() {
                 if (array[i][j].classList.contains("uno")) {
                     comprobarMina(i, j);
                 } else {
-                    revelarCeldas(i, j); //Llamar a la función para revelar celdas
-                    comprobarVictoria(); //Verificar si el jugador ha ganado
+                    revelarCeldas(i, j);
+                    comprobarVictoria();
                 }
             });
         }
@@ -80,8 +80,7 @@ function añadirClase(td, numero) {
 //Si hay mina en la celda, muestra un mensaje y reinicia el juego
 function comprobarMina(i, j) {
     if (array[i][j].classList.contains("uno")) {
-        mostrarMensaje("Has perdido");
-        reiniciarJuego();
+        mensaje(false)
     }
 }
 
@@ -92,17 +91,15 @@ function revelarCeldas(i, j) {
         return;
     }
 
-    //Revelar la celda
     array[i][j].classList.add("revelada");
-
     //Contar minas alrededor
-    let contador = comprobarMinasAlrededor(i, j);
+    let contador_MinasAlrededor = comprobarMinasAlrededor(i, j);
 
     //Muestra el número de minas alrededor
-    array[i][j].textContent = contador > 0 ? contador : '';
+    array[i][j].textContent = contador_MinasAlrededor > 0 ? contador_MinasAlrededor : '';
 
     //Si no hay minas alrededor, revela celdas adyacentes
-    if (contador === 0) {
+    if (contador_MinasAlrededor === 0) {
         for (let I = -1; I <= 1; I++) {
             for (let J = -1; J <= 1; J++) {
                 //Evitar el clic en la celda actual
@@ -122,7 +119,7 @@ function revelarCeldas(i, j) {
 
 //Búcle que comprueba las casillas que rodean a la casilla en la que se ha hecho clic
 function comprobarMinasAlrededor(i, j) {
-    let contador = 0;
+    let contador_MinasAlrededor = 0;
 
     for (let I = -1; I <= 1; I++) {
         for (let J = -1; J <= 1; J++) {
@@ -135,12 +132,12 @@ function comprobarMinasAlrededor(i, j) {
             //Controla que las celdas no se salgan de los límites
             if (fila >= 0 && fila < numFilas && columna >= 0 && columna < numColumnas) {
                 if (array[fila][columna].classList.contains("uno")) {
-                    contador++;
+                    contador_MinasAlrededor++;
                 }
             }
         }
     }
-    return contador; //Devuelve el número de minas alrededor
+    return contador_MinasAlrededor; //Devuelve el número de minas alrededor
 }
 
 //Función que verifica si el jugador ha ganado
@@ -158,53 +155,39 @@ function comprobarVictoria() {
 
     //Si todas las celdas sin mina han sido reveladas, el jugador gana
     if (celdasReveladas === totalCeldasSinMina) {
-        mostrarMensaje("¡Has ganado!");
-        reiniciarJuego();
+        mensaje(true)
     }
 }
 
-//Función para mostrar mensajes animados
-function mostrarMensaje(mensaje) {
-    const contenedorMensaje = document.getElementById("mensaje");
+function mensaje(win) {
 
-    //Elimina cualquier mensaje previo dentro del contenedor
-    contenedorMensaje.innerHTML = '';
+    win ? title = '¡Has ganado!' : title = 'Has perdido';
+    document.body.style.overflow = 'auto'; // Habilitar el scroll de nuevo
+    document.body.classList.remove('swal2-height-auto'); // Eliminar la clase que afecta el tamaño del body
+    Swal.fire({
+        title: title,
+        padding: "3em",
+        width: "400px",
+        color: "#00000",
 
-    //Crear un nuevo elemento <p> para el mensaje
-    const mensajeElemento = document.createElement("p");
-    mensajeElemento.textContent = mensaje;
-
-    //Agregar el nuevo elemento <p> al contenedor
-    contenedorMensaje.appendChild(mensajeElemento);
-
-    //Deshabilitar las celdas añadiendo la clase "tabla-desactivada"
-    document.getElementById("tablaJuego").classList.add("tabla-desactivada");
-
-    //Mostrar el mensaje añadiendo la clase "mostrar"
-    contenedorMensaje.classList.add("mostrar");
-
-    //Hacer que el mensaje desaparezca después de 5 segundos
-    setTimeout(() => {
-        contenedorMensaje.classList.remove("mostrar");
-
-        //Volver a habilitar las celdas quitando la clase "tabla-desactivada"
-        document.getElementById("tablaJuego").classList.remove("tabla-desactivada");
-    }, 5000);
+        confirmButtonText: 'Seguir jugando',
+        customClass: { confirmButton: 'custom-button' },
+        preConfirm: () => {
+            document.body.style.overflow = 'auto';
+        }
+    });
+    reiniciarJuego();
 }
 
 
 //Función que reinicia el juego sin recargar la página
 function reiniciarJuego() {
-    setTimeout(() => {
-        //Vaciar la cuadricula actual
-        const cuadriculaContainer = document.querySelector("#cuadricula");
-        cuadriculaContainer.innerHTML = ""; //Vaciar el contenido de la cuadrícula
+    const cuadriculaContainer = document.querySelector("#cuadricula");
+    cuadriculaContainer.innerHTML = "";
 
-        //Reiniciar variables
-        array = [];
-        contador2 = 0;
+    //Reiniciar variables
+    array = [];
+    contador2 = 0;
 
-        //Generar una nueva cuadricula
-        generarCuadricula();
-    }, 5000); //Espera 5 segundos antes de reiniciar el juego
+    generarCuadricula();
 }
